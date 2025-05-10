@@ -27,4 +27,19 @@ export const getPublications = async (data) => {
   }
 }
 
+export const addComment = async (publicationId, comment, user) => {
+  try {
+    const response = await apiClient.post(`/comment/${publicationId}`, {
+      comment,
+      user
+    });
+    return response.data;
+  } catch (e) {
+    return {
+      error: true,
+      e
+    }
+  }
+}
+
 export default apiClient

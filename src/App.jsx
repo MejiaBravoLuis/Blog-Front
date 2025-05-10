@@ -7,7 +7,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export const App = () => {
 
   let element = useRoutes(routes);
-
   return (
     <>
       {element}
