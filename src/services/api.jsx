@@ -42,4 +42,27 @@ export const addComment = async (publicationId, comment, user) => {
   }
 }
 
+export const deleteComment = async (commentId, publicationId) => {
+  try {
+    const response = await apiClient.delete(`/comment/${commentId}`, {
+      data: { publicationId }
+    });
+    return response.data;
+  } catch (e) {
+    return {
+      error: true,
+      e
+    }
+  }
+}
+
+export const updateComment = async (commentId, updatedCommentText) => {
+  try {
+    const response = await apiClient.put(`/comment/${commentId}`, { comment: updatedCommentText });
+    return response.data;
+  } catch (e) {
+    return { error: true, e };
+  }
+};
+
 export default apiClient

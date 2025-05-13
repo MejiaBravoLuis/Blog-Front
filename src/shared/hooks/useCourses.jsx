@@ -9,8 +9,8 @@ const useCourses = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/LearningBlog/v1/course"); // Ajusta la URL si es necesario
-        setCourses(response.data.cateories); // Asigna los cursos al estado
+        const response = await axios.get("http://localhost:3000/LearningBlog/v1/course");
+        setCourses(response.data.cateories);
       } catch (err) {
         setError("Something went wrong trying to fetch the courses, check if the backend is up");
       } finally {

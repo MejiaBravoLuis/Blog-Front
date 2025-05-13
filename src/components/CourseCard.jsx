@@ -3,6 +3,9 @@ import usePublications from "../shared/hooks/usePublications.jsx";
 import { Card, Button, Accordion } from "react-bootstrap";
 import './styles/courseCard.css';
 import CommentSection from "./CommentSection.jsx";
+import { DiTechcrunch } from "react-icons/di";
+import { GrTechnology } from "react-icons/gr";
+import { SiKingstontechnology } from "react-icons/si";
 
 export const CourseCard = ({ course }) => {
   const { publications, fetchPublicationsByCourse } = usePublications();
@@ -21,10 +24,14 @@ export const CourseCard = ({ course }) => {
     <div className="course-card-wrapper">
       <Card className="dashboard-card">
         <Card.Body>
+            <DiTechcrunch size={24} className="filter-icon"/>
+            <GrTechnology  size={24} className="filter-icon"/>
+            <SiKingstontechnology size={24} className="filter-icon"/>
           <Card.Title className="course-title">{course.name}</Card.Title>
           <Card.Text className="course-info">Impartido por: Elmer Santos</Card.Text>
           <Button className="view-button" variant="outline-dark" onClick={handleClick}>
             {active ? "Ocultar publicaciones" : "Ver publicaciones"}
+
           </Button>
         </Card.Body>
       </Card>
