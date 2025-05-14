@@ -72,6 +72,17 @@ export const updateComment = async (commentId, commentText, userName) => {
   }
 };
 
+export const getPublicationById = async (id) => {
+  try {
+    const response = await apiClient.get(`/publications/${id}`);
+    return response.data; // { publication: { ... } }
+  } catch (e) {
+    return {
+      error: true,
+      message: e.message,
+    };
+  }
+};
 
 
 export default apiClient

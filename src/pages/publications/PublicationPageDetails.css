@@ -1,0 +1,71 @@
+:root {
+  --color1: #141827;
+  --color2: #62455b;
+  --color3: #736681;
+  --color4: #c1d9d0;
+  --color5: #fffae3;
+}
+
+.publications{
+  background-color: var(--color1);
+}
+
+.container {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.card {
+  background-color: var(--color1);
+  color: var(--color5);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.card-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: var(--color5);
+}
+
+.card-subtitle {
+  font-size: 1.1rem;
+  color: var(--color4);
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  color: var(--color1);
+  line-height: 1.6;
+}
+
+hr {
+  border-color: var(--color2);
+  margin: 2rem 0;
+}
+
+.alert {
+  background-color: var(--color2);
+  color: var(--color5);
+  font-weight: bold;
+  padding: 1rem;
+}
+
+.comment-section {
+  margin-top: 2rem;
+}
+
+.comment-item {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.comment-date {
+  font-size: 0.9rem;
+  color: var(--color4);
+}

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import usePublications from "../shared/hooks/usePublications.jsx";
 import { Card, Button, Accordion } from "react-bootstrap";
 import './styles/courseCard.css';
-import CommentSection from "./CommentSection.jsx";
 import { DiTechcrunch } from "react-icons/di";
 import { GrTechnology } from "react-icons/gr";
 import { SiKingstontechnology } from "react-icons/si";
@@ -10,6 +10,7 @@ import { SiKingstontechnology } from "react-icons/si";
 export const CourseCard = ({ course }) => {
   const { publications, fetchPublicationsByCourse } = usePublications();
   const [active, setActive] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     if (active) {
@@ -20,18 +21,21 @@ export const CourseCard = ({ course }) => {
     }
   };
 
+  const handleNavigate = (id) => {
+    navigate(`/publications/${id}`);
+  };
+
   return (
     <div className="course-card-wrapper">
       <Card className="dashboard-card">
         <Card.Body>
-            <DiTechcrunch size={24} className="filter-icon"/>
-            <GrTechnology  size={24} className="filter-icon"/>
-            <SiKingstontechnology size={24} className="filter-icon"/>
+          <DiTechcrunch size={24} className="filter-icon" />
+          <GrTechnology size={24} className="filter-icon" />
+          <SiKingstontechnology size={24} className="filter-icon" />
           <Card.Title className="course-title">{course.name}</Card.Title>
           <Card.Text className="course-info">Impartido por: Elmer Santos</Card.Text>
           <Button className="view-button" variant="outline-dark" onClick={handleClick}>
             {active ? "Ocultar publicaciones" : "Ver publicaciones"}
-
           </Button>
         </Card.Body>
       </Card>
@@ -41,21 +45,11 @@ export const CourseCard = ({ course }) => {
           <Accordion defaultActiveKey="0">
             {publications.map((pub, index) => (
               <Accordion.Item eventKey={index.toString()} key={pub._id}>
-                <Accordion.Header>{pub.title}</Accordion.Header>
+                <Accordion.Header onClick={() => handleNavigate(pub._id)}>
+                  {pub.title}
+                </Accordion.Header>
                 <Accordion.Body>
-                  {pub.ppalText}
-                  <div className="publication-info">
-                    <div className="publication-author">
-                      <strong>Publicado por:</strong> {pub.user.username}
-                    </div>
-                    <div className="publication-date">
-                      <strong>Fecha de creación:</strong> {new Date(pub.createdAt).toLocaleDateString()}
-                    </div>
-                  </div>
-                  <CommentSection
-                    publicationId={pub._id}
-                    comments={pub.comments}
-                  />
+                  <em>Haz clic en el título para ver la publicación completa</em>
                 </Accordion.Body>
               </Accordion.Item>
             ))}
