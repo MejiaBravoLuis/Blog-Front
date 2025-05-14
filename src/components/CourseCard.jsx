@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import usePublications from "../shared/hooks/usePublications.jsx";
-import { Card, Button, Accordion } from "react-bootstrap";
+import { Card, Button, ListGroup } from "react-bootstrap";
 import './styles/courseCard.css';
 import { DiTechcrunch } from "react-icons/di";
 import { GrTechnology } from "react-icons/gr";
@@ -40,20 +40,23 @@ export const CourseCard = ({ course }) => {
         </Card.Body>
       </Card>
 
-      {active && publications.length > 0 && (
+      {active && (
         <div className="publications-container mt-3">
-          <Accordion defaultActiveKey="0">
-            {publications.map((pub, index) => (
-              <Accordion.Item eventKey={index.toString()} key={pub._id}>
-                <Accordion.Header onClick={() => handleNavigate(pub._id)}>
+          {publications.length > 0 ? (
+            <ListGroup>
+              {publications.map(pub => (
+                <ListGroup.Item
+                  action
+                  key={pub._id}
+                  onClick={() => handleNavigate(pub._id)}
+                >
                   {pub.title}
-                </Accordion.Header>
-                <Accordion.Body>
-                  <em>Haz clic en el título para ver la publicación completa</em>
-                </Accordion.Body>
-              </Accordion.Item>
-            ))}
-          </Accordion>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          ) : (
+            <p>No hay publicaciones para este curso.</p>
+          )}
         </div>
       )}
     </div>

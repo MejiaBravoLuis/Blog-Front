@@ -40,13 +40,13 @@ export const PublicationDetailPage = () => {
     <Container className=" my-4">
       <Card>
         <Card.Body>
-        <Button variant="link" onClick={handleGoBack}>
-            <AiOutlineRollback /> Regresar al Dashboard
+        <Button variant="" onClick={handleGoBack}>
+            <AiOutlineRollback /> Regresar a los demás cursos
           </Button>
-          <Card.Title>{publication.title}</Card.Title>
+          <Card.Title className="publication-title">{publication.title}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">
-            <strong>Publicado por:</strong> {publication.user?.username || 'Desconocido'} | 
-            <strong>Curso:</strong> {publication.course?.name || 'Curso no especificado'}<br />
+            <strong>Publicado por:</strong> {publication.user?.username || 'Desconocido'} |  
+            <strong> Curso:</strong> {publication.course?.name || 'Curso no especificado'}<br />
             <strong>Fecha:</strong> {new Date(publication.createdAt).toLocaleString()}
           </Card.Subtitle>
           <Card.Text>{publication.ppalText}</Card.Text>
