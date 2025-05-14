@@ -56,13 +56,22 @@ export const deleteComment = async (commentId, publicationId) => {
   }
 }
 
-export const updateComment = async (commentId, updatedCommentText) => {
+export const updateComment = async (commentId, commentText, userName) => {
   try {
-    const response = await apiClient.put(`/comment/${commentId}`, { comment: updatedCommentText });
-    return response.data;
+    const response = await apiClient.put(`/comment/${commentId}`, {
+      comment: commentText, 
+      user: userName,
+    });
+    return response.data; 
   } catch (e) {
-    return { error: true, e };
+    console.error("Error al actualizar el comentario:", e);
+    return {
+      error: true,
+      message: e.message,
+    };
   }
 };
+
+
 
 export default apiClient

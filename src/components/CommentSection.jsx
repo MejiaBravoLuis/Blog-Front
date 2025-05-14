@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { addComment, deleteComment } from '../services/api';
-import { FaRegTrashAlt } from 'react-icons/fa'; 
+import { useState } from 'react';
+import { addComment, deleteComment, updateComment } from '../services/api'; 
+import { FaRegTrashAlt, FaEdit } from 'react-icons/fa'; 
 import { Button, Form, Modal } from 'react-bootstrap';
 import './styles/CommentSection.css';
 
@@ -10,39 +10,64 @@ const CommentSection = ({ publicationId, comments }) => {
   const [commentList, setCommentList] = useState(comments);
   const [showForm, setShowForm] = useState(false);
   const [showModal, setShowModal] = useState(false); 
-  const [commentToDelete, setCommentToDelete] = useState(null); 
+  const [commentToDelete, setCommentToDelete] = useState(null);
+  const [commentToEdit, setCommentToEdit] = useState(null); 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (commentText.trim() === "") {
-      return alert("El comentario no puede estar vacío");
-    }
+  if (commentText.trim() === "") {
+    return alert("El comentario no puede estar vacío");
+  }
 
-    if (userName.trim() === "") {
-      return alert("El nombre de usuario es requerido");
-    }
+  if (userName.trim() === "") {
+    return alert("El nombre de usuario es requerido");
+  }
 
-    const response = await addComment(publicationId, commentText, userName);
+  try {
+    if (commentToEdit) {
+      const response = await updateComment(commentToEdit, commentText, userName);
 
-    if (!response.error) {
-      const newComment = {
-        _id: response.data._id,
-        comment: commentText,
-        user: userName,
-        createdAt: new Date().toISOString(),
-      };
-      setCommentList([newComment, ...commentList]);
-      setCommentText('');
-      setUserName('');
-      setShowForm(false);
+      if (response && !response.error) {
+        const updatedComments = commentList.map(comment => 
+          comment._id === commentToEdit ? { ...comment, comment: commentText, user: userName } : comment
+        );
+        setCommentList(updatedComments);
+
+        setShowForm(false);
+        setCommentToEdit(null);
+        setCommentText('');
+        setUserName('');
+      } else {
+        alert("Hubo un error al editar el comentario");
+      }
     } else {
-      alert("Hubo un error al agregar el comentario");
+      const response = await addComment(publicationId, commentText, userName);
+
+      if (response && !response.error) {
+        const newComment = {
+          _id: response.data._id,
+          comment: commentText,
+          user: userName,
+          createdAt: new Date().toISOString(),
+        };
+        setCommentList([newComment, ...commentList]);
+        setUserName('');
+        setShowForm(false);
+      } else {
+        alert("Hubo un error al agregar el comentario");
+      }
     }
-  };
+  } catch (err) {
+    console.error("Error al enviar la solicitud:", err);
+    alert(err.message || "Error desconocido");
+  }
+};
+
 
   const toggleForm = () => {
     setShowForm(!showForm);
+    setCommentToEdit(null); 
   };
 
   const handleOpenModal = (commentId) => {
@@ -66,6 +91,13 @@ const CommentSection = ({ publicationId, comments }) => {
     setCommentToDelete(null); 
   };
 
+  const handleEdit = (comment) => {
+    setCommentToEdit(comment._id);
+    setCommentText(comment.comment);
+    setUserName(comment.user);
+    setShowForm(true); 
+  };
+
   return (
     <div>
       <h4>Comentarios</h4>
@@ -82,6 +114,11 @@ const CommentSection = ({ publicationId, comments }) => {
             <FaRegTrashAlt
               style={{ cursor: 'pointer', color: 'ligth', marginLeft: '10px' }}
               onClick={() => handleOpenModal(comment._id)}
+            />
+
+            <FaEdit
+              style={{ cursor: 'pointer', color: 'ligth', marginLeft: '10px' }}
+              onClick={() => handleEdit(comment)} 
             />
           </div>
         ))}
@@ -116,7 +153,7 @@ const CommentSection = ({ publicationId, comments }) => {
           </Form.Group>
 
           <Button type="submit" variant="light">
-            Enviar comentario
+            {commentToEdit ? "Actualizar comentario" : "Enviar comentario"}
           </Button>
         </Form>
       )}
